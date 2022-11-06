@@ -10,4 +10,7 @@ public class MemberService {
     @Autowired
     private MemberRepository memberRepository;
 
+    public boolean checkDuplicatedEamil(String email) {
+        return memberRepository.checkDuplicatedEmail(email) > 0;
+    }
 }

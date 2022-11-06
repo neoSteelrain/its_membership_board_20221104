@@ -3,6 +3,7 @@ use db_springframework;
 create user 'user_springframework'@'localhost' identified by '1234';
 grant all privileges on db_springframework.* to user_springframework@localhost;
 
+DROP TABLE IF EXISTS member_table;
 CREATE TABLE `member_table` (
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `memberEmail` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL UNIQUE,
@@ -12,7 +13,8 @@ CREATE TABLE `member_table` (
     `memberProfile` VARCHAR(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-    CREATE TABLE `board_table` (
+DROP TABLE IF EXISTS board_table;
+CREATE TABLE `board_table` (
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `boardTitle` VARCHAR(100) COLLATE utf8mb4_unicode_ci NOT NULL,
     `boardWriter` VARCHAR(50) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -24,6 +26,7 @@ CREATE TABLE `member_table` (
     constraint fk_board_table_memberId foreign key(memberId) references member_table(id) on delete cascade
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+DROP TABLE IF EXISTS comment_table;
 CREATE TABLE `comment_table` (
      `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
      `boardId` BIGINT UNSIGNED NOT NULL,

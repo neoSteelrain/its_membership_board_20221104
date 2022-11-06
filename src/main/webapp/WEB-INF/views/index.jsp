@@ -11,7 +11,7 @@
     <title>Title</title>
 </head>
 <body>
-    <a href="#">회원가입</a>
+    <a href="/member/sign-up">회원가입</a>
     <a href="#">로그인</a>
     <a href="#">글목록</a>
 </body>
