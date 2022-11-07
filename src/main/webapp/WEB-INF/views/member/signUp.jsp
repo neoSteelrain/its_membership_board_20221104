@@ -60,7 +60,7 @@
                                 <span id="pwNotice"></span>
                             </div>
                             <div class="button">
-                                <input id="memberSignUp" name="memberSignUp" type="button" class="btn" onclick="requestSignUp()">회원가입</input>
+                                <input id="memberSignUp" name="memberSignUp" type="button" class="btn" onclick="requestSignUp()" value="회원가입">
                             </div>
                         </form>
                     </div>
@@ -93,6 +93,18 @@
         /*
         form 태그가 2개 있어서 그런지 document.form.submit 함수가 먹히지 않는다.
         일단 ajax로 fordata 만들어서 해보자.
+        - 일단 값이 Controller로 잘 넘어가는 것은 확인했지만 뭔가 꺼림직하다.
+        !중요
+        - memberProfile : 사용자 프로필이미지 처리
+        디폴트이미지인 경우 $('#memberProfile').prop('files')[0] 에는 값이 없다. undefined 으로 나옴
+        undefined 상태로 formdata에 실어서 보내면 400 응답코드 반환됨
+        MemberDTO 에서 memberProfile을 @Nullable 으로 해봤지만 똑같은 결과...
+        사용자가 프로필 이미지를 선택하지 않고 디폴트 이미지를 선택했다면
+        formdata에 memberProfile 속성 자체를 넣지 않아야 한다.
+
+        - TO DO
+        spring 에서 jquery ajax 로 formdata에 이미지같은 첨부파일 처리하는 법을 좀더 알아봐야 한다.
+        DTO에 정의된 첨부파일을 옵션으로 자동처리해서 키값은 있으면서 값을 null로 넣어도 처리되는 방법이 있을거 같다.
          */
         // MemberDTO 에 매핑되로록 키값을 넣어준다.
         const requestSignUp = () => {
@@ -101,54 +113,47 @@
             signUpFrmData.append("memberEmail", $('#memberEmail').val());
             signUpFrmData.append("memberMobile", $('#memberMobile').val());
             signUpFrmData.append("memberPassword", $('#memberPassword').val());
-            // 디폴트이미지인 경우 files[0] 에는 값이 없다.
-            //signUpFrmData.append("profileFile", $('#memberProfile').prop('files')[0])
-            // console.log(signUpFrmData.get("memberName"));
+            // 프로필이미지 처리
+            const profileImgs = $('#memberProfile').prop('files');
+            if(profileImgs.length > 0){
+                // 프로필이미지는 1개만 선택가능하므로 0번째 값만 읽어온다.
+                signUpFrmData.append("profileFile", profileImgs[0]);
+            }
             // 회원가입 버튼 비활성화
             $("#memberSignUp").prop("disabled", true);
 
             $.ajax({
                 type:"post",
+                enctype: "multipart/form-data",
                 url:"/member/sign-up",
-                data:{signUpFrmData},
+                data:signUpFrmData, // 수업시간에 했던 식으로 data:{signUpFrmData} 같이 중괄호 묶으면 에러난다.
+                // 아래와 같이 formdata로 넣어주기 않고 바로 키:값으로 넣어주면 Controller에서 전부 null 떨어진다.
+                // data:{
+                //     memberName : $('#memberName').val(),
+                //     memberEmail : $('#memberEmail').val(),
+                //     memberMobile : $('#memberMobile').val(),
+                //     memberPassword : $('#memberPassword').val(),
+                //     profileFile : $('#memberProfile').prop('files')[0]
+                // },
+                processData:false,
+                contentType:false,
                 success:function (result){
                     console.log(result);
+                    // 회원가입 버튼 활성화
+                    $("#memberSignUp").prop("disabled", false);
                 },
-                error:function (){
-
+                error:function (e) {
+                    console.log(e);
+                    $("#memberSignUp").prop("disabled", false);
                 }
             });
-
-            // $.ajax({
-            //     type:"post",
-            //     enctype: "multipart/form-data",
-            //     url:"/member/sign-up",
-            //     data:{signUpFrmData},
-            //     data:{
-            //         memberName : $('#memberName').val(),
-            //         memberEmail : $('#memberEmail').val(),
-            //         memberMobile : $('#memberMobile').val(),
-            //         memberPassword : $('#memberPassword').val(),
-            //         profileFile : $('#memberProfile').prop('files')[0]
-            //     },
-            //     processData:false,
-            //     contentType:false,
-            //     success:function (result){
-            //         console.log(result);
-            //         // 회원가입 버튼 활성화
-            //         $("#memberSignUp").prop("disabled", false);
-            //     },
-            //     error:function (e) {
-            //         console.log(e);
-            //         $("#memberSignUp").prop("disabled", false);
-            //     }
-            // });
         }
         const showProfile = (input) => {
             if (input.files == undefined && input.files[0] == undefined) {
                 return;
             }
-
+            // $( "input[value='Hot Fuzz']" ).next().text( "Hot Fuzz" );
+            console.log($("#profileUpload[value='files']"));
             let reader = new FileReader();
             reader.onload = (e) => {
                 $('#previewProfile').attr('src', e.target.result);

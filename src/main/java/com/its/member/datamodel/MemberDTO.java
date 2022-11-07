@@ -1,6 +1,7 @@
 package com.its.member.datamodel;
 
 import lombok.*;
+import org.springframework.lang.Nullable;
 import org.springframework.web.multipart.MultipartFile;
 
 /**

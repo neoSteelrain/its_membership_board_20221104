@@ -49,8 +49,9 @@ public class MemberController {
      * @param memberDTO
      * @return 로그인 페이지
      */
+    //PostMapping(value = "/sign-up", produces = "text/plain;charset=UTF-8")
     @PostMapping(value = "/sign-up")
-    @ResponseBody
+    @ResponseBody()
     public String memberSignUp(@ModelAttribute MemberDTO memberDTO){
         System.out.println("request = " + memberDTO);
         //memberService.signUp(memberDTO);
