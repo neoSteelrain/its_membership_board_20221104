@@ -38,7 +38,7 @@
                 <div class="col-lg-6 col-12">
                     <div class="form-head">
                         <h4 class="title">회원가입</h4>
-                        <form action="#" method="post">
+                        <form id="memberSignUpForm" name="memberSignUpForm">
                             <div class="form-group">
                                 <label>이름</label>
                                 <input id="memberName" name="memberName" type="text" class="border border-primary" onblur="checkName()">
@@ -60,7 +60,7 @@
                                 <span id="pwNotice"></span>
                             </div>
                             <div class="button">
-                                <button id="memberSignUp" name="memberSignUp" type="button" class="btn">회원가입</button>
+                                <input id="memberSignUp" name="memberSignUp" type="button" class="btn" onclick="requestSignUp()">회원가입</input>
                             </div>
                         </form>
                     </div>
@@ -72,7 +72,9 @@
                             <div class="p-3 border">
                                 <img id="previewProfile" src="../../../resources/assets/images/default-profile.jpg" >
                             </div>
-                            <input id="profileUpload" class="file-upload" type="file" accept="image/*" onchange="showProfile(this)" />
+                            <form id="memberProfileForm" name="memberProfileForm">
+                                <input id="memberProfile" class="file-upload" type="file" accept="image/*" onchange="showProfile(this)" />
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -88,6 +90,60 @@
     <script src="../../../resources/assets/js/main.js"></script>
     <script src="../../../resources/assets/js/jquery-3.6.1.min.js"></script>
     <script>
+        /*
+        form 태그가 2개 있어서 그런지 document.form.submit 함수가 먹히지 않는다.
+        일단 ajax로 fordata 만들어서 해보자.
+         */
+        // MemberDTO 에 매핑되로록 키값을 넣어준다.
+        const requestSignUp = () => {
+            let signUpFrmData = new FormData();
+            signUpFrmData.append("memberName", $('#memberName').val());
+            signUpFrmData.append("memberEmail", $('#memberEmail').val());
+            signUpFrmData.append("memberMobile", $('#memberMobile').val());
+            signUpFrmData.append("memberPassword", $('#memberPassword').val());
+            // 디폴트이미지인 경우 files[0] 에는 값이 없다.
+            //signUpFrmData.append("profileFile", $('#memberProfile').prop('files')[0])
+            // console.log(signUpFrmData.get("memberName"));
+            // 회원가입 버튼 비활성화
+            $("#memberSignUp").prop("disabled", true);
+
+            $.ajax({
+                type:"post",
+                url:"/member/sign-up",
+                data:{signUpFrmData},
+                success:function (result){
+                    console.log(result);
+                },
+                error:function (){
+
+                }
+            });
+
+            // $.ajax({
+            //     type:"post",
+            //     enctype: "multipart/form-data",
+            //     url:"/member/sign-up",
+            //     data:{signUpFrmData},
+            //     data:{
+            //         memberName : $('#memberName').val(),
+            //         memberEmail : $('#memberEmail').val(),
+            //         memberMobile : $('#memberMobile').val(),
+            //         memberPassword : $('#memberPassword').val(),
+            //         profileFile : $('#memberProfile').prop('files')[0]
+            //     },
+            //     processData:false,
+            //     contentType:false,
+            //     success:function (result){
+            //         console.log(result);
+            //         // 회원가입 버튼 활성화
+            //         $("#memberSignUp").prop("disabled", false);
+            //     },
+            //     error:function (e) {
+            //         console.log(e);
+            //         $("#memberSignUp").prop("disabled", false);
+            //     }
+            // });
+        }
         const showProfile = (input) => {
             if (input.files == undefined && input.files[0] == undefined) {
                 return;
