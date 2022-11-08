@@ -7,7 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html class="no-js">
-<meta charset="utf-8" />
+    <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="../../../resources/assets/css/tiny-slider.css" />
     <link rel="stylesheet" href="../../../resources/assets/css/glightbox.min.css" />
     <link rel="stylesheet" href="../../../resources/assets/css/main.css" />
-    <title>로그인</title>
+    <title>회원가입</title>
 
 </head>
 <body>
@@ -127,7 +127,7 @@
                 enctype: "multipart/form-data",
                 url:"/member/sign-up",
                 data:signUpFrmData, // 수업시간에 했던 식으로 data:{signUpFrmData} 같이 중괄호 묶으면 에러난다.
-                // 아래와 같이 formdata로 넣어주기 않고 바로 키:값으로 넣어주면 Controller에서 전부 null 떨어진다.
+                // 아래와 같이 formdata로 넣어주지 않고 바로 키:값으로 넣어주면 Controller에서 전부 null 떨어진다.
                 // data:{
                 //     memberName : $('#memberName').val(),
                 //     memberEmail : $('#memberEmail').val(),
@@ -138,12 +138,13 @@
                 processData:false,
                 contentType:false,
                 success:function (result){
-                    console.log(result);
                     // 회원가입 버튼 활성화
                     $("#memberSignUp").prop("disabled", false);
+                    alert("회원가입이 완료되었습니다.");
+                    location.href = "/member/sign-in";
                 },
                 error:function (e) {
-                    console.log(e);
+                    alert("회원가입이 실패하였습니다.");
                     $("#memberSignUp").prop("disabled", false);
                 }
             });

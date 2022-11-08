@@ -5,6 +5,9 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Repository
 public class MemberRepository {
 
@@ -15,8 +18,14 @@ public class MemberRepository {
         return sql.selectOne("Member.checkDuplicatedEmail", email);
     }
 
-    public MemberDTO signUp(MemberDTO memberDTO) {
-        sql.insert("Member.memberSignUp", memberDTO);
-        return memberDTO;
+    public int signUp(MemberDTO memberDTO) {
+        return sql.insert("Member.memberSignUp", memberDTO);
+    }
+
+    public MemberDTO isSignIn(String memberEmail, String memberPassword) {
+        Map<String, String> signInParam = new HashMap<>();
+        signInParam.put("email", memberEmail);
+        signInParam.put("pw", memberPassword);
+        return sql.selectOne("Member.memberSignIn", signInParam);
     }
 }

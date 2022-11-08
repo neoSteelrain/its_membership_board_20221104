@@ -37,3 +37,13 @@ CREATE TABLE `comment_table` (
      constraint fk_comment_memberId foreign key(memberId) references member_table(id) on delete cascade,
      constraint fk_comment_boardId foreign key(boardId) references board_table(id) on delete cascade
 ) ENGINE = InnoDB DEFAULT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+
+drop table if exists board_file_table;
+create table board_file_table
+(
+    id bigint unsigned auto_increment primary key,
+    originalFileName varchar(100) not null,
+    storedFileName varchar(100) not null,
+    boardId bigint unsigned not null,
+    constraint fk_board_file foreign key(boardId) references board_table(id) on delete cascade
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

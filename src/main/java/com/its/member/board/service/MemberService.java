@@ -1,15 +1,24 @@
 package com.its.member.board.service;
 
 import com.its.member.board.repository.MemberRepository;
+import com.its.member.common.ConfigManager;
 import com.its.member.datamodel.MemberDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.ServletContext;
+import java.io.File;
+import java.io.IOException;
 
 @Service
 public class MemberService {
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    private ServletContext servletContext;
 
     /**
      * 회원의 이메일 중복을 검사하는 메서드
@@ -30,12 +39,37 @@ public class MemberService {
      * @param memberDTO
      * @return
      */
-    public void signUp(MemberDTO memberDTO) {
+    public boolean signUp(MemberDTO memberDTO) {
+        // 프로필이 없으면 DB에 null 값으로 insert 된다.
+        saveProfile(memberDTO);
+        return memberRepository.signUp(memberDTO) > 0;
+    }
 
-        // 프로필이 없으면 DB에 null 값으로 insert 한다.
-        if(memberDTO.getMemberProfile() == null){
+    /**
+     * 회원가입한 유저의 프로필이미지를 처리한다.
+     * @param memberDTO
+     */
+    private void saveProfile(MemberDTO memberDTO){
+        if(memberDTO.getProfileFile() == null){
             memberDTO.setProfileAttached(0);
-            MemberDTO signUpMemberDTO = memberRepository.signUp(memberDTO);
+            return;
         }
+        MultipartFile profile = memberDTO.getProfileFile();
+        String originalFileName = profile.getOriginalFilename();
+        String storedFileName = memberDTO.getMemberEmail() + "-" + originalFileName;
+        memberDTO.setMemberProfile(originalFileName);
+        // 프로필이미지 저장
+        try{
+            String contextPath = ConfigManager.MEMBER_PROFILE_SAVE_PATH + storedFileName;
+            File profileFile = new File(contextPath);
+            profile.transferTo(profileFile);
+        }catch(IOException ioe){
+            ioe.printStackTrace();
+        }
+        memberDTO.setProfileAttached(1);
+    }
+
+    public MemberDTO signIn(String memberEmail, String memberPassword) {
+        return memberRepository.isSignIn(memberEmail, memberPassword);
     }
 }

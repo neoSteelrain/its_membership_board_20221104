@@ -9,8 +9,14 @@
         where memberEmail = #{email};
     </select>
 
-    <insert id="memberSignUp" parameterType="member" useGeneratedKeys="true" keyProperty="id">
+    <insert id="memberSignUp" parameterType="member" >
         insert into member_table(memberEmail, memberPassword, memberName, memberMobile, memberProfile) values
                     (#{memberEmail}, #{memberPassword}, #{memberName}, #{memberMobile}, #{memberProfile});
     </insert>
+
+    <select id="memberSignIn" parameterType="java.lang.String" resultType="member">
+        select id, memberEmail, memberPassword, memberName, memberPassword, memberProfile
+        from member_table
+        where memberEmail = #{email} and memberPassword = #{pw};
+    </select>
 </mapper>
