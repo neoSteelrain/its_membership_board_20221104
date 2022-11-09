@@ -2,30 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="Member">
-    <select id="checkDuplicatedEmail" parameterType="String" resultType="int">
-        select count(id)
-        from member_table
-        where memberEmail = #{email};
-    </select>
-
-    <insert id="memberSignUp" parameterType="member" >
-        insert into member_table(memberEmail, memberPassword, memberName, memberMobile, memberProfile) values
-                    (#{memberEmail}, #{memberPassword}, #{memberName}, #{memberMobile}, #{memberProfile});
+<mapper namespace="Board">
+    <insert id="registerBoard" parameterType="board" useGeneratedKeys="true" keyProperty="id">
+        insert into board_table(boardTitle, boardWriter, boardContents, memberId) values
+            (#{boardTitle}, #{boardWriter}, #{boardContents}, #{memberId});
+    </insert>
+    
+    <insert id="registerAttachedFile" parameterType="attchedFile" useGeneratedKeys="true" keyProperty="id">
+        insert into board_file_table(originalFileName, storedFileName, boardId) values
+            (#{originalFileName}, #{storedFileName}, #{boardId});
     </insert>
 
-    <select id="memberSignIn" parameterType="java.lang.String" resultType="member">
-        select id, memberEmail, memberPassword, memberName, memberProfile
-        from member_table
-        where memberEmail = #{email} and memberPassword = #{pw};
+    <select id="pagingList" parameterType="java.util.HashMap" resultType="board">
+        select id, boardTitle, boardWriter, boardContents, boardHits, boardCreatedDate
+        from board_table
+        order by boardHits desc limit #{offset}, #{pageCount};
     </select>
 
-    <select id="memberList" resultType="member">
-        select id, memberEmail, memberPassword, memberName, memberPassword, memberProfile
-        from member_table;
+    <select id="totalBoardCount" resultType="int">
+        select count(id) from board_table;
     </select>
-
-    <delete id="memberDelete" parameterType="long">
-        delete from member_table where id = #{id};
-    </delete>
 </mapper>

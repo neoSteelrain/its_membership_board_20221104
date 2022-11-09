@@ -78,7 +78,7 @@
             success:(result)=>{
                 if(result == "success"){
                     console.log(result);
-                    location.href = "../board/boardList";
+                    location.href = "../board/boardList?page=1&pageCount=5";
                 }else if("fail"){
                     console.log(result);
                     $('#memberEmail').attr('value', '');

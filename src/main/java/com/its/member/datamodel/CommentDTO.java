@@ -1,5 +1,7 @@
 package com.its.member.datamodel;
 
+import lombok.Data;
+
 import java.sql.Timestamp;
 
 /**
@@ -11,6 +13,7 @@ import java.sql.Timestamp;
  * 내용
  * 댓글작성 생성시간
  */
+@Data
 public class CommentDTO {
     private long id;
     private long boardId;

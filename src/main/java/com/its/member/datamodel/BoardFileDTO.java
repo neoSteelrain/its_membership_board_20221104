@@ -1,5 +1,6 @@
 package com.its.member.datamodel;
 
+import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -10,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
  * 서버에 저장하기 위해 재설정된 이름
  * 첨부파일이 첨부된 게시물의 id
  */
+@Data
 public class BoardFileDTO {
     private long id;
     private String originalFileName;

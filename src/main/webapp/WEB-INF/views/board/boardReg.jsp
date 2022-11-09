@@ -70,6 +70,12 @@
         document.boardRegFrm.submit();
     }
 
+    /*
+        ajax 구현은 잘 안된다.회원가입 할때와 똑같고 첨부파일 부분만 배열로 바꿨을 뿐인데... 안된다.
+        구글링해도 기본의 1개일때와 기본틀은 똑같고 첨부파일부분만 배열이냐 List 이냐 차이일뿐이다.
+        Controller 부분도 ModelAttribute 로 받는 것은 동일한것으로 보이지만, 다른 설정이나 코딩이 추가적으로 필요한것 같다.
+        ModelAttribute 에 DTO 받는 방법외에 파라미터는 RequestParam, 첨부파일은 MultipartFile[]로 따로 받는 것도 해봐야 한다.
+     */
     const regiterBoard = () => {
         $("#boardRegister").prop("disabled", true);
         const boardData = new FormData();

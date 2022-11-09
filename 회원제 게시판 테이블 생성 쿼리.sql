@@ -19,7 +19,7 @@ CREATE TABLE `board_table` (
     `boardTitle` VARCHAR(100) COLLATE utf8mb4_unicode_ci NOT NULL,
     `boardWriter` VARCHAR(50) COLLATE utf8mb4_unicode_ci NOT NULL,
     `boardContents` VARCHAR(2000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-    `boardHits` INT UNSIGNED DEFAULT '0',
+    `boardHits` INT DEFAULT '0',
     `boardCreatedDate` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `memberId` BIGINT UNSIGNED NOT NULL,
     constraint fk_board_table_memberId foreign key(memberId) references member_table(id) on delete cascade

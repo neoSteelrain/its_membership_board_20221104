@@ -20,11 +20,7 @@ import java.util.ArrayList;
  * - 첨부파일 리스트
  */
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
 public class BoardDTO {
     private long id;
     private String boardTitle;
@@ -35,4 +31,5 @@ public class BoardDTO {
     private Timestamp boardCreatedDate;
     private long memberId;
     private MultipartFile[] boardFileList;
+    private BoardFileDTO[] attachedFiles;
 }
