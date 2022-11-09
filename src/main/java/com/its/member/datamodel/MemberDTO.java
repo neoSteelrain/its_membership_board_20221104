@@ -5,7 +5,8 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- *  회원정보가 담긴 DTO
+ *  회원정보를 나타내는 DTO
+ *  DB의 member_table 테이블과 매칭된다.
  */
 @AllArgsConstructor
 @NoArgsConstructor

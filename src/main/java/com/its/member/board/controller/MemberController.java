@@ -132,4 +132,6 @@ public class MemberController {
     public String memberSignUp(@ModelAttribute MemberDTO memberDTO){
         return memberService.signUp(memberDTO) ? "yes" : "no";
     }
+
+
 }

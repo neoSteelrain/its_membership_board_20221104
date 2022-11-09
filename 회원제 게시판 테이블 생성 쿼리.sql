@@ -21,7 +21,6 @@ CREATE TABLE `board_table` (
     `boardContents` VARCHAR(2000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
     `boardHits` INT UNSIGNED DEFAULT '0',
     `boardCreatedDate` DATETIME DEFAULT CURRENT_TIMESTAMP,
-    `boardFileName` VARCHAR(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
     `memberId` BIGINT UNSIGNED NOT NULL,
     constraint fk_board_table_memberId foreign key(memberId) references member_table(id) on delete cascade
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

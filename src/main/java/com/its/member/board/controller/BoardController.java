@@ -1,8 +1,9 @@
 package com.its.member.board.controller;
 
+import com.its.member.datamodel.BoardDTO;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/board")
@@ -22,8 +23,16 @@ public class BoardController {
      * @return
      */
     @GetMapping("/boardReg")
-    public String boardEdit(){
+    public String boardReg(){
         return "/board/boardReg";
+    }
+
+    @PostMapping("/boardReg")
+    @ResponseBody
+    public String boardRegister(@ModelAttribute BoardDTO boardDTO){
+        System.out.println("BoardController.boardRegister");
+        System.out.println("boardDTO = " + boardDTO);
+        return "success";
     }
 
 //    // 페이징목록

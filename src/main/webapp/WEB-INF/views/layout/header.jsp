@@ -11,6 +11,8 @@
 <head>
     <link rel="stylesheet" href="../../../resources/assets/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <script src="../../../resources/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../../../resources/assets/js/jquery-3.6.1.min.js"></script>
     <title>Title</title>
 </head>
 <body>
@@ -25,7 +27,7 @@
 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 <li><a href="/" class="nav-link px-2 text-secondary">Home</a></li>
-                <li><a href="../board/boardReg" class="nav-link px-2 text-white">글작성</a></li>
+                <li><a href="javascript:boardRegister()" class="nav-link px-2 text-white">글작성</a></li>
                 <li><a href="#" class="nav-link px-2 text-white">글목록</a></li>
                 <c:if test="${sessionScope.memberName == 'admin'}">
                     <li><a href="../member/admin" class="nav-link px-2 text-white">관리자페이지</a></li>
@@ -63,6 +65,14 @@
 <script>
     const requestSignOut = () => {
         location.href = "/member/signOut";
+    }
+
+    const boardRegister = () => {
+        if('${sessionScope.memberName}' == undefined){
+            alert('게시글 등록은 로그인 이후에 사용가능합니다.');
+            return;
+        }
+        location.href = "../board/boardReg";
     }
 </script>
 </html>
