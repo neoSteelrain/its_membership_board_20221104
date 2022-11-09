@@ -47,3 +47,7 @@ create table board_file_table
     boardId bigint unsigned not null,
     constraint fk_board_file foreign key(boardId) references board_table(id) on delete cascade
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 1번째로 관리자계정을 생성
+insert into member_table(memberEmail, memberPassword, memberName, memberMobile) values
+    ('admin@admin.com', 'admin010!', 'admin', '010-1111-2222');

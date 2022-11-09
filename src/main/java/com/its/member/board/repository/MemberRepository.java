@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -27,5 +28,13 @@ public class MemberRepository {
         signInParam.put("email", memberEmail);
         signInParam.put("pw", memberPassword);
         return sql.selectOne("Member.memberSignIn", signInParam);
+    }
+
+    public List<MemberDTO> memberList() {
+        return sql.selectList("Member.memberList");
+    }
+
+    public int memberDelete(long id) {
+        return sql.delete("Member.memberDelete", id);
     }
 }

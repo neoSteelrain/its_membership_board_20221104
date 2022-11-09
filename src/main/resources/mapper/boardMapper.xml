@@ -15,8 +15,17 @@
     </insert>
 
     <select id="memberSignIn" parameterType="java.lang.String" resultType="member">
-        select id, memberEmail, memberPassword, memberName, memberPassword, memberProfile
+        select id, memberEmail, memberPassword, memberName, memberProfile
         from member_table
         where memberEmail = #{email} and memberPassword = #{pw};
     </select>
+
+    <select id="memberList" resultType="member">
+        select id, memberEmail, memberPassword, memberName, memberPassword, memberProfile
+        from member_table;
+    </select>
+
+    <delete id="memberDelete" parameterType="long">
+        delete from member_table where id = #{id};
+    </delete>
 </mapper>

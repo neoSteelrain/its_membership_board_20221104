@@ -5,9 +5,11 @@ import com.its.member.common.SESSION_KEY;
 import com.its.member.datamodel.MemberDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 @RequestMapping("/member")
@@ -32,6 +34,33 @@ public class MemberController {
     @GetMapping("/sign-in")
     public String memberSignInPage(){
         return "/member/signIn";
+    }
+
+    /**
+     * 관리자 페이지로 이동하기 위한 컨트롤러
+     * @return
+     */
+    @GetMapping("/admin")
+    public String adminPage(){
+        return "/member/admin";
+    }
+    
+    /**
+     * 회원록록 페이지를 처리하기 위한 컨트롤러
+     * @return
+     */
+    @GetMapping("/")
+    public String memberList(Model model){
+        List<MemberDTO> memberDTOList = memberService.memberList();
+        model.addAttribute("memberList", memberDTOList);
+        return "/member/memberList";
+    }
+
+    @GetMapping("/memberDelete")
+    @ResponseBody
+    public String memberDelete(@RequestParam("id") long id){
+        boolean isDeleted = memberService.memberDelete(id);
+        return isDeleted ? "success" : "fail";
     }
 
     /**
@@ -73,6 +102,7 @@ public class MemberController {
         session.invalidate();
         return "redirect:/";
     }
+
 
     /**
      * 이메일 중복체크를 위한 컨트롤러

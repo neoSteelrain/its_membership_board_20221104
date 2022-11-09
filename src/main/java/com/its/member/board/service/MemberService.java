@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public class MemberService {
@@ -71,5 +72,13 @@ public class MemberService {
 
     public MemberDTO signIn(String memberEmail, String memberPassword) {
         return memberRepository.isSignIn(memberEmail, memberPassword);
+    }
+
+    public List<MemberDTO> memberList() {
+        return memberRepository.memberList();
+    }
+
+    public boolean memberDelete(long id) {
+        return memberRepository.memberDelete(id) > 0;
     }
 }
