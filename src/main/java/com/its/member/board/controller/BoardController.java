@@ -3,6 +3,7 @@ package com.its.member.board.controller;
 import com.its.member.board.service.BoardService;
 import com.its.member.common.SESSION_KEY;
 import com.its.member.datamodel.BoardDTO;
+import com.its.member.datamodel.MemberDTO;
 import com.its.member.datamodel.PageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,14 +20,6 @@ public class BoardController {
     @Autowired
     private BoardService boardService;
 
-    /**
-     * 게사판 전제목록 페이지로 가는 컨트롤러
-     * @return
-     */
-//    @GetMapping("/boardList")
-//    public String boardList(){
-//        return "/board/boardList";
-//    }
 
     /**
      * 게시물을 새로 등록하는 페이지로 가는 컨트롤러
@@ -83,6 +76,33 @@ public class BoardController {
     }
 
     /**
+     * 검색결과 페이징을 시도하다 실패한 컨트롤러
+     * 아직 내공부족 mybatis 실제 실행 쿼리를 보면 좋겠지만 일단 잠시 뒤로 미룬다.
+     */
+//    @GetMapping("/boardSearch")
+//    public String boardSearch(@RequestParam("searchQuery") String searchQuery,
+//                              @RequestParam("searchType") String searchType,
+//                              @RequestParam(value="page", required=false, defaultValue="1") int page,
+//                              @RequestParam(value="pageCount", required = false, defaultValue = "5") int pageCount,
+//                              Model model){
+//        List<BoardDTO> boardDTOLit = boardService.getSearchedPagingList(page, pageCount, searchType, searchQuery);
+//        PageDTO pageDTO = boardService.searchedPagingParam(page, pageCount,searchType, searchQuery);
+//        model.addAttribute("paging", pageDTO);
+//        model.addAttribute("boardList", boardDTOLit);
+//        return "/board/boardList";
+//    }
+
+    @GetMapping("/boardSearch")
+    public String boardSearch(@RequestParam("searchQuery") String searchQuery,
+                              @RequestParam("searchType") String searchType,
+                              Model model){
+        List<BoardDTO> searchList = boardService.search(searchType, searchQuery);
+        model.addAttribute("boardList", searchList);
+        return "/board/boardSearch";
+    }
+
+
+    /**
      * 게시판 상세조회 컨트롤러
      * 상세조회 하고 싶은 게시판의 id 와, 게시판의 페이지 번호를 전달받는다.
      * 게시판의 조회수를 증가시킨다.
@@ -119,15 +139,5 @@ public class BoardController {
         return boardService.boardDelete(boardId) ? "success" : "fail";
     }
 
-    @GetMapping("/boardSearch")
-    public String boardSearch(@RequestParam("searchParam") String searchParam, Model model){
-        List<BoardDTO> boardDTOLit = boardService.boardSearch(searchParam);
-        model.addAttribute(("boardList"), boardDTOLit);
-        return "/board/";
-    }
 
-    @GetMapping("/myPage")
-    public String myPagePage(){
-        return "/board/myPage";
-    }
 }

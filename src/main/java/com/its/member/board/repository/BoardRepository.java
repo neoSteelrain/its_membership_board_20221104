@@ -29,7 +29,7 @@ public class BoardRepository {
     }
 
     public int getTotalBoardCount() {
-        return sql.selectOne("totalBoardCount");
+        return sql.selectOne("Board.totalBoardCount");
     }
 
     public BoardDTO getBoardDetail(long boardId) {
@@ -41,14 +41,22 @@ public class BoardRepository {
     }
 
     public int boardUpdate(BoardDTO boardDTO) {
-        return sql.update("boardUpdate", boardDTO);
+        return sql.update("Board.boardUpdate", boardDTO);
     }
 
     public int boardDelete(long boardId) {
-        return sql.delete("boardDelete", boardId);
+        return sql.delete("Board.boardDelete", boardId);
     }
 
-    public List<BoardDTO> boardSearch(String searchParam) {
-        return sql.selectList("boardSearch", searchParam);
+    public List<BoardDTO> boardSearch(Map param) {
+        return sql.selectList("Board.boardSearch", param);
+    }
+
+    public int getTotalSearchedBoardCount(Map<String, String> param) {
+        return sql.selectOne("Board.totalSearchedBoardCount", param);
+    }
+
+    public List<BoardDTO> search(Map<String, String> searchParams) {
+        return sql.selectList("Board.search", searchParams);
     }
 }

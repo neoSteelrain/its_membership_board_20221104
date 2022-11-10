@@ -77,10 +77,10 @@
             },
             success:(result)=>{
                 if(result == "success"){
-                    console.log(result);
+                    // console.log(result);
                     location.href = "../board/boardList?page=1&pageCount=5";
                 }else if("fail"){
-                    console.log(result);
+                    // console.log(result);
                     $('#memberEmail').attr('value', '');
                     $('#memberPassword').attr('value', '');
                     alert('아이디 또는 비밀번호가 맞지 않습니다.');

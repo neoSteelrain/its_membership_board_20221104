@@ -38,13 +38,13 @@
 
             <form action="#" class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
                 <div class="input-group">
-                    <select type="value" name="type" class="form-select">
+                    <select id="searchTypeSlt" name="searchTypeSlt" type="value" class="form-select">
                         <option value="boardTitle" selected>제목</option>
                         <option value="boardWriter">작성자</option>
                     </select>
-                    <input id="searchTitleIpt" name="searchTitleIpt" type="search" name="q" class="form-control form-control-dark text-bg-dark" placeholder="검색어 입력"
+                    <input id="searchTitleIpt" name="searchTitleIpt" type="text" class="form-control form-control-dark text-bg-dark" placeholder="검색어 입력"
                            aria-label="Search">
-                    <button id="searchTitleBtn" name="searchTitleBtn" class="btn btn-outline-light" onclick="searchTitle()"><i class="bi bi-search"></i></button>
+                    <button id="searchTitleBtn" name="searchTitleBtn" class="btn btn-outline-light" type="button" onclick="searchBoard()"><i class="bi bi-search"></i></button>
                 </div>
             </form>
 
@@ -52,8 +52,8 @@
                 <c:choose>
                     <c:when test="${sessionScope.memberName != null}">
                         <span>${sessionScope.memberName}님</span>
-                        <button id="membberMypage" type="membberMypage" onclick="requestMypage()" class="btn btn-outline-light me-2">마이페이지</button>
-                        <button id="memberSignOut" type="memberSignOut" onclick="requestSignOut()" class="btn btn-outline-light me-2">로그아웃</button>
+                        <button id="memberMypage" name="memberMypage" onclick="requestMypage()" class="btn btn-outline-light me-2">마이페이지</button>
+                        <button id="memberSignOut" name="memberSignOut" onclick="requestSignOut()" class="btn btn-outline-light me-2">로그아웃</button>
                     </c:when>
                     <c:otherwise>
                         <button id="memberSignIn" name="memberSignIn" type="button" onclick="requestSignUp()" class="btn btn-outline-light me-2">로그인</button>
@@ -70,11 +70,12 @@
 
     }
     const requestMypage = () => {
-        location.href = "../member/myPage";
+        console.log("requestMypage");
+        location.href = "/member/myPage?memberId="+${sessionScope.id};
     }
 
     const requestSignOut = () => {
-        location.href = "../member/signOut";
+        location.href = "/member/signOut";
     }
 
     const boardRegister = () => {
@@ -82,27 +83,61 @@
             alert('게시글 등록은 로그인 이후에 사용가능합니다.');
             return;
         }
-        location.href = "../board/boardReg";
+        location.href = "/board/boardReg";
     }
 
-    const searchTitle = () => {
-        const searchParam = $('#searchTitleIpt').val();
-        if(searchParam == 'null'){
+    const searchBoard = () => {
+        const sQuery = $('#searchTitleIpt').val();
+        if(sQuery == "null")
             return;
-        }
 
-        $("#searchTitleBtn").prop("disabled", true);
-        $.ajax({
-            type:"get",
-            url:"../board/boardSearch",
-            data:searchParam,
-            success:() => {
-                $("#searchTitleBtn").prop("disabled", false);
-            },
-            error:() => {
-                $("#searchTitleBtn").prop("disabled", false);
-            }
-        });
+        // 검색타입 : 제목 boardTitle, 작성자 boardWriter
+        const type = $('#searchTypeSlt').val();
+        location.href = "/board/boardSearch?searchType="+type+"&searchQuery="+sQuery;
+        // $("#searchTitleBtn").prop("disabled", true);
+        // $.ajax({
+        //     type:"get",
+        //     url:"/board/boardSearch",
+        //     data:{
+        //         searchType:type,
+        //         searchQuery:sQuery,
+        //     },
+        //     success:()=>{
+        //         console.log("success");
+        //         $("#searchTitleBtn").prop("disabled", false);
+        //     },
+        //     error:()=>{
+        //         console.log("error");
+        //         $("#searchTitleBtn").prop("disabled", false);
+        //     }
+        // });
     }
+
+    // const searchBoard = () => {
+    //     const sQuery = $('#searchTitleIpt').val();
+    //     if(sQuery == "null")
+    //         return;
+    //
+    //     // 검색타입 : 제목 boardTitle, 작성자 boardWriter
+    //     const type = $('#searchTypeSlt').val();
+    //     console.log(type);
+    //     $("#searchTitleBtn").prop("disabled", true);
+    //     $.ajax({
+    //         type:"get",
+    //         url:"/board/boardSearch",
+    //         data:{
+    //             searchType:type,
+    //             searchQuery:sQuery,
+    //             page:1,
+    //             pageCount:5
+    //         },
+    //         success:() => {
+    //             $("#searchTitleBtn").prop("disabled", false);
+    //         },
+    //         error:() => {
+    //             $("#searchTitleBtn").prop("disabled", false);
+    //         }
+    //     });
+    // }
 </script>
 </html>

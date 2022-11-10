@@ -12,6 +12,9 @@
 <head>
     <link rel="stylesheet" href="../../../resources/assets/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="../../../resources/assets/css/main.css" />
+    <script src="../../../resources/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../../../resources/assets/js/jquery-3.6.1.min.js"></script>
+    <script src="../../../resources/assets/js/main.js"></script>
     <title>게시물 목록</title>
 </head>
 <script>
@@ -139,9 +142,6 @@
     <!-- 페이징 인덱스 끝 -->
 
 </body>
-<script src="../../../resources/assets/js/bootstrap.bundle.min.js"></script>
-<script src="../../../resources/assets/js/jquery-3.6.1.min.js"></script>
-<script src="../../../resources/assets/js/main.js"></script>
 <script>
     const selectPageCount = () => {
         const selectedValue = parseInt($('#pageCountSlt').val());

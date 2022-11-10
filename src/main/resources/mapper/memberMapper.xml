@@ -28,4 +28,20 @@
     <delete id="memberDelete" parameterType="long">
         delete from member_table where id = #{id};
     </delete>
+
+    <select id="getMemberInfo" parameterType="long" resultType="member">
+        select id, memberEmail, memberPassword, memberName, memberMobile, memberProfile
+        from member_table
+        where id = #{id};
+    </select>
+
+    <update id="updateMemberInfo" parameterType="member">
+        update member_table set memberName = #{memberName}, memberMobile=#{memberMobile} where id=#{id};
+    </update>
+
+    <select id="getMemberPassword" parameterType="long" resultType="String">
+        select memberPassword
+        from member_table
+        where id = #{id};
+    </select>
 </mapper>

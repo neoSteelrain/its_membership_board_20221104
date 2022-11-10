@@ -154,7 +154,7 @@
                 return;
             }
             // $( "input[value='Hot Fuzz']" ).next().text( "Hot Fuzz" );
-            console.log($("#profileUpload[value='files']"));
+            // console.log($("#profileUpload[value='files']"));
             let reader = new FileReader();
             reader.onload = (e) => {
                 $('#previewProfile').attr('src', e.target.result);
@@ -203,9 +203,9 @@
         const checkDuplicateEmail = () => {
             const emailInput = $('#memberEmail').val();
             const emailNoticeTag = $('#emailNotice');
-            //const emailRegex = /^[A-Za-z\d]@[A-Za-z\d].[A-Za-z]|.[A-Za-z]$/;
+            const emailRegex = /^[A-Za-z\d]@[A-Za-z\d].[A-Za-z]|.[A-Za-z]$/;
             // console.log(emailRegex.test('test@test.co.kr'));
-            if(emailInput == "") {
+            if(emailInput == "" && !emailRegex.test(emailInput)) {
                 emailNoticeTag.css('color', 'red');
                 emailNoticeTag.html('이메일 주소는 필수입력입니다')
                 $('#memberEmail').focus();

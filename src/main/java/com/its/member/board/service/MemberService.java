@@ -10,7 +10,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MemberService {
@@ -80,5 +82,18 @@ public class MemberService {
 
     public boolean memberDelete(long id) {
         return memberRepository.memberDelete(id) > 0;
+    }
+
+    public MemberDTO getMemberInfo(long id) {
+        return memberRepository.getMemberInfo(id);
+    }
+
+    public boolean updateMemeberInfo(MemberDTO memberDTO) {
+        return memberRepository.updateMemberInfo(memberDTO) > 0;
+    }
+
+    public boolean checkMemberPassword(String pw, long id) {
+        String originalPW = memberRepository.getMemberPassword(id);
+        return pw.equals(originalPW);
     }
 }

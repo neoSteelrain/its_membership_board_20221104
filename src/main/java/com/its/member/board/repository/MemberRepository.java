@@ -37,4 +37,16 @@ public class MemberRepository {
     public int memberDelete(long id) {
         return sql.delete("Member.memberDelete", id);
     }
+
+    public MemberDTO getMemberInfo(long id) {
+        return sql.selectOne("getMemberInfo", id);
+    }
+
+    public int updateMemberInfo(MemberDTO memberDTO) {
+        return sql.update("updateMemberInfo", memberDTO);
+    }
+
+    public String getMemberPassword(long id) {
+        return sql.selectOne("getMemberPassword", id);
+    }
 }

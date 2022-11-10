@@ -117,7 +117,29 @@ public class BoardService {
 
     public PageDTO pagingParam(int page, int pageCount) {
         int totalBoardCount = boardRepository.getTotalBoardCount();
-        int maxPage = (int) Math.ceil( (double) totalBoardCount / pageCount);
+        int maxPage = (int) (Math.ceil( (double) totalBoardCount / pageCount));
+        int startPage =(((int) (int)Math.ceil( (double)page / PageingConst.BLOCK_LIMIT)) -1) * PageingConst.BLOCK_LIMIT + 1;
+        int endPage = startPage + PageingConst.BLOCK_LIMIT -1;
+
+        if(endPage > maxPage){
+            endPage = maxPage;
+        }
+        PageDTO pageDTO = new PageDTO();
+        pageDTO.setPage(page);
+        pageDTO.setStartPage(startPage);
+        pageDTO.setEndPage(endPage);
+        pageDTO.setMaxPage(maxPage);
+        return pageDTO;
+    }
+
+    public PageDTO searchedPagingParam(int page, int pageCount, String searchType, String searchQuery){
+        // 검색으로 필터링한 페이지들의 전체갯수를 가져온다.
+        Map<String, String> param = new HashMap<>();
+        param.put("searchType", searchType);
+        param.put("searchQuery", searchQuery);
+        int totalSearchedBoardCount = boardRepository.getTotalSearchedBoardCount(param);
+
+        int maxPage = (int)(Math.ceil( (double) totalSearchedBoardCount / pageCount));
         int startPage =(((int) (int)Math.ceil( (double)page / PageingConst.BLOCK_LIMIT)) -1) * PageingConst.BLOCK_LIMIT + 1;
         int endPage = startPage + PageingConst.BLOCK_LIMIT -1;
 
@@ -152,7 +174,21 @@ public class BoardService {
         return boardRepository.boardDelete(boardId) > 0;
     }
 
-    public List<BoardDTO> boardSearch(String searchParam) {
-        return boardRepository.boardSearch(searchParam);
+    public List<BoardDTO> getSearchedPagingList(int page, int pageCount, String searchType, String searchQuery) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("offset", page);
+        params.put("pageCount", pageCount);
+        params.put("searchType", searchType);
+        params.put("searchQuery", searchQuery);
+
+        return boardRepository.boardSearch(params);
+    }
+
+    public List<BoardDTO> search(String searchType, String searchQuery) {
+        Map<String, String> searchParams = new HashMap<>();
+        searchParams.put("searchType", searchType);
+        searchParams.put("searchQuery", searchQuery);
+        List<BoardDTO> searchList = boardRepository.search(searchParams);
+        return searchList;
     }
 }

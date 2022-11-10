@@ -133,5 +133,23 @@ public class MemberController {
         return memberService.signUp(memberDTO) ? "yes" : "no";
     }
 
+    @GetMapping("/myPage")
+    public String myPagePage(@RequestParam("memberId") long id, Model model){
+        MemberDTO memberDTO = memberService.getMemberInfo(id);
+        model.addAttribute("memberInfo", memberDTO);
+        return "member/myPage";
+    }
 
+    @PostMapping("/updateMemberInfo")
+    @ResponseBody
+    public String updateMemberInfo(@ModelAttribute MemberDTO memberDTO){
+        return memberService.updateMemeberInfo(memberDTO) ? "success" : "fail";
+    }
+
+    @PostMapping("/checkMemberPassword")
+    @ResponseBody
+    public String checkMemberPassword(@RequestParam("pw") String pw,
+                                      @RequestParam("id") long id){
+        return memberService.checkMemberPassword(pw,id) ? "ok" : "no";
+    }
 }

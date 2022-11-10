@@ -13,7 +13,7 @@
             (#{originalFileName}, #{storedFileName}, #{boardId});
     </insert>
 
-    <select id="pagingList" parameterType="java.util.HashMap" resultType="board">
+    <select id="pagingList" parameterType="java.util.Map" resultType="board">
         select id, boardTitle, boardWriter, boardContents, boardHits, boardCreatedDate, memberId
         from board_table
         order by boardHits desc limit #{offset}, #{pageCount};
@@ -42,9 +42,25 @@
         delete from board_table where id=#{id};
     </delete>
 
-    <select id="boardSearch" parameterType="String" resultType="board">
+    <select id="search" parameterType="java.util.Map" resultType="board">
         select id, boardTitle, boardWriter, boardContents, boardHits, boardCreatedDate, memberId
         from board_table
-        where boardWriter
+        where ${searchType}
+        like concat('%', #{searchQuery}, '%') order by id desc;
     </select>
+
+    <select id="boardSearch_미구현" parameterType="java.util.Map" resultType="board">
+        select id, boardTitle, boardWriter, boardContents, boardHits, boardCreatedDate, memberId
+        from board_table
+        where ${searchType}
+        like concat('%', #{searchQuery}, '%') order by boardHits desc limit #{offset}, #{pageCount};
+    </select>
+
+    <select id="totalSearchedBoardCount_미구현" parameterType="java.util.Map" resultType="int">
+        select count(id)
+        from board_table
+        where ${searchType}
+        like concat('%', #{searchQuery}, '%');
+    </select>
+
 </mapper>
