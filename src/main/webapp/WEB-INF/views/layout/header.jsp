@@ -27,8 +27,10 @@
 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 <li><a href="/" class="nav-link px-2 text-secondary">인덱스화면</a></li>
-                <li><a href="javascript:boardRegister()" class="nav-link px-2 text-white">글작성</a></li>
-                <li><a href="../board/" class="nav-link px-2 text-white">글목록</a></li>
+                <c:if test="${sessionScope.id > 0}">
+                    <li><a href="javascript:boardRegister()" class="nav-link px-2 text-white">글작성</a></li>
+                </c:if>
+                <li><a href="../board/boardList?page=1&pageCount=5" class="nav-link px-2 text-white">글목록</a></li>
                 <c:if test="${sessionScope.memberName == 'admin'}">
                     <li><a href="../member/admin" class="nav-link px-2 text-white">관리자페이지</a></li>
                 </c:if>
@@ -40,9 +42,9 @@
                         <option value="boardTitle" selected>제목</option>
                         <option value="boardWriter">작성자</option>
                     </select>
-                    <input type="search" name="q" class="form-control form-control-dark text-bg-dark" placeholder="검색어 입력"
+                    <input id="searchTitleIpt" name="searchTitleIpt" type="search" name="q" class="form-control form-control-dark text-bg-dark" placeholder="검색어 입력"
                            aria-label="Search">
-                    <button class="btn btn-outline-light"><i class="bi bi-search"></i></button>
+                    <button id="searchTitleBtn" name="searchTitleBtn" class="btn btn-outline-light" onclick="searchTitle()"><i class="bi bi-search"></i></button>
                 </div>
             </form>
 
@@ -50,10 +52,11 @@
                 <c:choose>
                     <c:when test="${sessionScope.memberName != null}">
                         <span>${sessionScope.memberName}님</span>
+                        <button id="membberMypage" type="membberMypage" onclick="requestMypage()" class="btn btn-outline-light me-2">마이페이지</button>
                         <button id="memberSignOut" type="memberSignOut" onclick="requestSignOut()" class="btn btn-outline-light me-2">로그아웃</button>
                     </c:when>
                     <c:otherwise>
-                        <button id="memberSignIn" name="memberSignIn" type="button" onclick="#" class="btn btn-outline-light me-2">로그인</button>
+                        <button id="memberSignIn" name="memberSignIn" type="button" onclick="requestSignUp()" class="btn btn-outline-light me-2">로그인</button>
                         <button id="memberSignUp" name="memberSignUp" type="button" class="btn btn-warning">회원가입</button>
                     </c:otherwise>
                 </c:choose>
@@ -63,8 +66,15 @@
 </header>
 </body>
 <script>
+    const requestSignUp = () => {
+
+    }
+    const requestMypage = () => {
+        location.href = "../member/myPage";
+    }
+
     const requestSignOut = () => {
-        location.href = "/member/signOut";
+        location.href = "../member/signOut";
     }
 
     const boardRegister = () => {
@@ -73,6 +83,26 @@
             return;
         }
         location.href = "../board/boardReg";
+    }
+
+    const searchTitle = () => {
+        const searchParam = $('#searchTitleIpt').val();
+        if(searchParam == 'null'){
+            return;
+        }
+
+        $("#searchTitleBtn").prop("disabled", true);
+        $.ajax({
+            type:"get",
+            url:"../board/boardSearch",
+            data:searchParam,
+            success:() => {
+                $("#searchTitleBtn").prop("disabled", false);
+            },
+            error:() => {
+                $("#searchTitleBtn").prop("disabled", false);
+            }
+        });
     }
 </script>
 </html>

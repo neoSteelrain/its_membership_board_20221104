@@ -25,8 +25,34 @@ public class BoardService {
     private BoardRepository boardRepository;
 
 
+    /**
+     *  BoardFileDTO 에 boardId를 넣어주려면 먼저 boardDTO를 DB에 insert하고 DB에서 생성된 boardId를 받아와야 한다.
+     *  1. boardId를 얻은 다음 BordFileDTO 에 넣어준다.
+     *  2. 첨부파일을 디스크에 저장한다.
+     *  3. 첨부파일을 DB에 저장한다.
+     *  4. 전부 하나의 트랜잭션에 걸어야 하지만 아직 더 공부해야...나중에 트랜잭션 걸어야 한다.
+     * @param boardDTO
+     * @param memberId
+     * @param memberEmail
+     * @return
+     */
+    public boolean boardRegister(BoardDTO boardDTO, long memberId, String memberEmail) {
+        boardDTO.setMemberId(memberId);
+        boardDTO = boardRepository.registerBoard(boardDTO);
+        // 이제 boardId가 만들어졌으니 첨부파일들을 저장하고 성공이냐 실패냐 리턴한다.
+        return saveAttachedFiles(boardDTO, memberEmail);
+    }
+
     private boolean saveAttachedFiles(BoardDTO boardDTO, String memberEmail){
-        if(boardDTO.getBoardFileList() == null || boardDTO.getBoardFileList().length == 0)
+        /*
+         view 에서 첨부파일이 없더도 MultipartFile 에는 값이 넣어져서 넘어오고, isEmpt() 메서드로 첨부파일여부를 체크 가능
+         더구나 MultipartFile[] 에서는 단순히 null 이나 length == 0 으로는 체크가 안됨.
+         단순 배열인줄 알고 length == 0 로 체크했더니 board_file_table 에 insert 과정으로 넘어가버림.
+         첨부파일이 없어도 length가 1로 넘어온다. 왜 그런지는 모르겠다.
+         일단 legnth == 1 and MultipartFile[]의 0번째의 isEmpty 로 첨부파일 여부를 체크하고 자세한 이유는 알아봐야 한다.
+         */
+
+        if(boardDTO.getBoardFileList().length == 1 && boardDTO.getBoardFileList()[0].isEmpty())
             return true; // 게시물만 등록할 수 있으므로 첨부파일도 없어도 정상이다.
 
         // 이제 boardId가 만들어졌다.
@@ -53,24 +79,6 @@ public class BoardService {
             return false;
         }
         return true;
-    }
-
-    /**
-     *  BoardFileDTO 에 boardId를 넣어주려면 먼저 boardDTO를 DB에 insert하고 DB에서 생성된 boardId를 받아와야 한다.
-     *  1. boardId를 얻은 다음 BordFileDTO 에 넣어준다.
-     *  2. 첨부파일을 디스크에 저장한다.
-     *  3. 첨부파일을 DB에 저장한다.
-     *  4. 전부 하나의 트랜잭션에 걸어야 하지만 아직 더 공부해야...나중에 트랜잭션 걸어야 한다.
-     * @param boardDTO
-     * @param memberId
-     * @param memberEmail
-     * @return
-     */
-    public boolean boardRegister(BoardDTO boardDTO, long memberId, String memberEmail) {
-        boardDTO.setMemberId(memberId);
-        boardDTO = boardRepository.registerBoard(boardDTO);
-        // 이제 boardId가 만들어졌으니 첨부파일들을 저장하고 성공이냐 실패냐 리턴한다.
-        return saveAttachedFiles(boardDTO, memberEmail);
     }
 
     /**
@@ -122,5 +130,29 @@ public class BoardService {
         pageDTO.setEndPage(endPage);
         pageDTO.setMaxPage(maxPage);
         return pageDTO;
+    }
+
+    public BoardDTO getBoardDetail(long boardId) {
+        return boardRepository.getBoardDetail(boardId);
+    }
+
+    public boolean increaseBoardHits(long boardId) {
+        return boardRepository.increaseBoardHits(boardId) > 0;
+    }
+
+    public boolean boardUpdate(long boardId, String boardTitle, String boardContents) {
+        BoardDTO board = new BoardDTO();
+        board.setId(boardId);
+        board.setBoardTitle(boardTitle);
+        board.setBoardContents(boardContents);
+        return boardRepository.boardUpdate(board) > 0;
+    }
+
+    public boolean boardDelete(long boardId) {
+        return boardRepository.boardDelete(boardId) > 0;
+    }
+
+    public List<BoardDTO> boardSearch(String searchParam) {
+        return boardRepository.boardSearch(searchParam);
     }
 }

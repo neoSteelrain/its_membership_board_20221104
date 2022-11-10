@@ -9,16 +9,8 @@
 <html>
 <head>
     <link rel="stylesheet" href="../../../resources/assets/css/bootstrap.min.css"/>
-    <script src="../../../resources/assets/js/bootstrap.bundle.min.js"></script>
-    <script src="../../../resources/assets/js/jquery-3.6.1.min.js"></script>
+
     <title>게시물 등록</title>
-    <style>
-        body{background:#f5f5f5}
-        .text-white-50 { color: rgba(255, 255, 255, .5); }
-        .bg-blue { background-color:#00b5ec; }
-        .border-bottom { border-bottom: 1px solid #e5e5e5; }
-        .box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
-    </style>
 </head>
 <body>
 <div class="preloader">
@@ -38,10 +30,10 @@
                     <label for="boardWriter" class="form-label">작성자</label>
                     <input type="text" class="form-control" id="boardWriter" name="boardWriter" readonly value="${sessionScope.memberName}">
                 </div>
-                <div class="col-md-6">
-                    <label for="boardPassword" class="form-label">비밀번호</label>
-                    <input type="password" class="form-control" id="boardPassword" name="boardPassword">
-                </div>
+<%--                <div class="col-md-6">--%>
+<%--                    <label for="boardPassword" class="form-label">비밀번호</label>--%>
+<%--                    <input type="password" class="form-control" id="boardPassword" name="boardPassword">--%>
+<%--                </div>--%>
                 <div class="col-12">
                     <label for="boardTitle" class="form-label">제목</label>
                     <input type="text" class="form-control" id="boardTitle" name="boardTitle">
@@ -65,6 +57,9 @@
     </section>
 </main>
 </body>
+<script src="../../../resources/assets/js/bootstrap.bundle.min.js"></script>
+<script src="../../../resources/assets/js/jquery-3.6.1.min.js"></script>
+<script src="../../../resources/assets/js/main.js"></script>
 <script>
     const regiterBoardSubmit = () => {
         document.boardRegFrm.submit();

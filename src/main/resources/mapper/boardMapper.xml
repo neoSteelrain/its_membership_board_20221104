@@ -14,12 +14,37 @@
     </insert>
 
     <select id="pagingList" parameterType="java.util.HashMap" resultType="board">
-        select id, boardTitle, boardWriter, boardContents, boardHits, boardCreatedDate
+        select id, boardTitle, boardWriter, boardContents, boardHits, boardCreatedDate, memberId
         from board_table
         order by boardHits desc limit #{offset}, #{pageCount};
     </select>
 
     <select id="totalBoardCount" resultType="int">
         select count(id) from board_table;
+    </select>
+
+    <select id="boardDetail" parameterType="long" resultType="board">
+        select bt.id, boardTitle, boardWriter, boardContents, boardHits, boardCreatedDate, memberId, count(bft.id) as attachedFileCount
+        from board_table bt left join board_file_table bft
+        on bt.id = bft.boardId
+        where bt.id = #{id};
+    </select>
+
+    <update id="increaseBoardHits" parameterType="long">
+        update board_table set boardHits = boardHits + 1 where id = #{id};
+    </update>
+
+    <update id="boardUpdate" parameterType="board">
+        update board_table set boardTitle = #{boardTitle}, boardContents = #{boardContents} where id = #{id};
+    </update>
+    
+    <delete id="boardDelete" parameterType="long">
+        delete from board_table where id=#{id};
+    </delete>
+
+    <select id="boardSearch" parameterType="String" resultType="board">
+        select id, boardTitle, boardWriter, boardContents, boardHits, boardCreatedDate, memberId
+        from board_table
+        where boardWriter
     </select>
 </mapper>

@@ -31,4 +31,24 @@ public class BoardRepository {
     public int getTotalBoardCount() {
         return sql.selectOne("totalBoardCount");
     }
+
+    public BoardDTO getBoardDetail(long boardId) {
+        return sql.selectOne("Board.boardDetail", boardId);
+    }
+
+    public int increaseBoardHits(long boardId) {
+        return sql.update("Board.increaseBoardHits", boardId);
+    }
+
+    public int boardUpdate(BoardDTO boardDTO) {
+        return sql.update("boardUpdate", boardDTO);
+    }
+
+    public int boardDelete(long boardId) {
+        return sql.delete("boardDelete", boardId);
+    }
+
+    public List<BoardDTO> boardSearch(String searchParam) {
+        return sql.selectList("boardSearch", searchParam);
+    }
 }
