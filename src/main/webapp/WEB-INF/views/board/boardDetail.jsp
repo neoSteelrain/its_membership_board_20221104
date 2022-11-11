@@ -142,7 +142,7 @@
 
         $.ajax({
             type:"post",
-            url:"../comment/commentWrite",
+            url:"/comment/commentWrite",
             data:{
                 memberId:mId,
                 boardId:bId,
@@ -151,8 +151,8 @@
             },
             dataType:"json",
             success:(commentList)=>{
-                $('#comment-list').show();
-                console.log(commentList);
+                // $('#comment-list').show();
+                // console.log(commentList);
                 let output = "<table class='table'>";
                 output += "<tr><th>댓글번호</th>";
                 output += "<th>작성자</th>";
