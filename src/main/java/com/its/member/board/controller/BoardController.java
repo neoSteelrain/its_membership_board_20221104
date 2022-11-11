@@ -1,8 +1,10 @@
 package com.its.member.board.controller;
 
 import com.its.member.board.service.BoardService;
+import com.its.member.board.service.CommentService;
 import com.its.member.common.SESSION_KEY;
 import com.its.member.datamodel.BoardDTO;
+import com.its.member.datamodel.CommentDTO;
 import com.its.member.datamodel.MemberDTO;
 import com.its.member.datamodel.PageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ public class BoardController {
 
     @Autowired
     private BoardService boardService;
+
+    @Autowired
+    private CommentService commentService;
 
 
     /**
@@ -119,8 +124,10 @@ public class BoardController {
         // 조회수증가에 성공하면 true, 실패하면 false 를 반환하지만 사용하지는 않는다.
         boardService.increaseBoardHits(boardId);
         BoardDTO boardDTO = boardService.getBoardDetail(boardId);
-        model.addAttribute("board", boardDTO); // 게시판 정보
-        model.addAttribute("page", page); // 게시판의 페이지 번호
+        List<CommentDTO> commentList = commentService.getCommentListByBoardId(boardId);
+        model.addAttribute("board", boardDTO); // 게시물 정보
+        model.addAttribute("page", page); // 게시물의 페이지 번호
+        model.addAttribute("commentList", commentList); // 게시물의 댓글목록
         return "/board/boardDetail";
     }
 

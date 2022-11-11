@@ -33,4 +33,5 @@ public class BoardDTO {
     private MultipartFile[] boardFileList;
     private BoardFileDTO[] attachedFiles;
     private int attachedFileCount; // 아직 첨부파일 다운로드를 구현하지 못해서 일단 첨부파일 갯수만 보여준다.
+    private int commentCount; // 게시물의 댓글 갯수
 }

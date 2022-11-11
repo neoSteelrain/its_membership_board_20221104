@@ -31,7 +31,7 @@ CREATE TABLE `comment_table` (
      `boardId` BIGINT UNSIGNED NOT NULL,
      `memberId` BIGINT UNSIGNED NOT NULL,
      `commentWriter` VARCHAR(50) NOT NULL,
-     `comment_contents` VARCHAR(500),
+     `commentContents` VARCHAR(500),
      `commentCreatedDate` DATETIME DEFAULT CURRENT_TIMESTAMP,
      constraint fk_comment_memberId foreign key(memberId) references member_table(id) on delete cascade,
      constraint fk_comment_boardId foreign key(boardId) references board_table(id) on delete cascade

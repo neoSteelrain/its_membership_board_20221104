@@ -14,8 +14,9 @@
     </insert>
 
     <select id="pagingList" parameterType="java.util.Map" resultType="board">
-        select id, boardTitle, boardWriter, boardContents, boardHits, boardCreatedDate, memberId
-        from board_table
+        select bt.id, boardTitle, boardWriter, boardContents, boardHits, boardCreatedDate, bt.memberId,
+            (select count(id) from comment_table ct where bt.id = ct.boardId) as commentCount
+        from board_table bt
         order by boardHits desc limit #{offset}, #{pageCount};
     </select>
 

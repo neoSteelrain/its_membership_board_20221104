@@ -64,7 +64,7 @@
                     <c:forEach items="${boardList}" var="board">
                         <tr>
                             <td>${board.id}</td>
-                            <td><a href="/board/boardDetail?boardId=${board.id}&page=${paging.page}">${board.boardTitle}</a></td>
+                            <td><a href="/board/boardDetail?boardId=${board.id}&page=${paging.page}">${board.boardTitle}</a>(${board.commentCount})</td>
                             <td>${board.boardWriter}</td>
                             <td><fmt:formatDate value="${board.boardCreatedDate}" pattern="yyyy-MM-dd hh:mm:ss"></fmt:formatDate> </td>
                             <td>${board.boardHits}</td>
