@@ -145,6 +145,7 @@
 <script>
     const selectPageCount = () => {
         const selectedValue = parseInt($('#pageCountSlt').val());
+        location.href = "/board/boardList?page=1&pageCount="+selectedValue;
     }
 
     const requestBoardUpdate = (boardId) => {
